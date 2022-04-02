@@ -2,10 +2,17 @@
 
 const express = require("express");
 const { sequelize } = require("./models");
+const rootRouter = require("./src/routers");
 
 const app = express();
 
-const PORT = process.env.PORT || 8080;
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api", rootRouter);
 
 sequelize
   .authenticate()
@@ -15,6 +22,8 @@ sequelize
   .catch((error) => {
     console.error("Unable to connect to the database:", error);
   });
+
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
