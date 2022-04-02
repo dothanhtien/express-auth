@@ -1,0 +1,11 @@
+{
+  "name": "express-auth",
+  "version": "1.0.0",
+  "description": "Set up authentication & authorization with ExpressJS",
+  "main": "index.js",
+  "author": "Tien Do Thanh <dothanhtien95@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
