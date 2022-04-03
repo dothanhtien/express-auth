@@ -7,7 +7,7 @@ const authJwt = require("../middlewares/authJwt");
 
 const rootRouter = express.Router();
 
-rootRouter.use("/users", userRouter);
+rootRouter.use("/users", authJwt.verifyToken, userRouter);
 rootRouter.use("/auth", authRouter);
 
 module.exports = rootRouter;
