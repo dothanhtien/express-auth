@@ -1,11 +1,12 @@
 "use strict";
 const express = require("express");
 const userController = require("../../controllers/users");
+const userService = require("../../services/users");
 
 const userRouter = express.Router();
 
 // create an user
-userRouter.post("/", userController.createUser);
+userRouter.post("/", userService.validate(), userController.createUser);
 
 // get list of users
 userRouter.get("/", userController.getUsers);
@@ -14,7 +15,7 @@ userRouter.get("/", userController.getUsers);
 userRouter.get("/:id", userController.getUserDetails);
 
 // update an user
-userRouter.patch("/:id", userController.updateUser);
+userRouter.patch("/:id", userService.validate(), userController.updateUser);
 
 // delete an user
 userRouter.delete("/:id", userController.deleteUser);

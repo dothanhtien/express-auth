@@ -1,4 +1,5 @@
 "use strict";
+const { validationResult } = require("express-validator");
 const {
   getUsers,
   createUser,
@@ -11,10 +12,17 @@ const {
 const { encryptPassword } = require("../../services/auth");
 
 exports.createUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      status: "error",
+      errors: errors.mapped(),
+    });
+  }
+
   const { email, password, firstName, lastName, dateOfBirth, phoneNumber } =
     req.body;
-
-  // validation will be implemented later
 
   const isExist = await checkUserExistsByEmail(email);
 
@@ -84,6 +92,15 @@ exports.getUserDetails = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      status: "error",
+      errors: errors.mapped(),
+    });
+  }
+
   const { id } = req.params;
   const { email, password, firstName, lastName, dateOfBirth, phoneNumber } =
     req.body;

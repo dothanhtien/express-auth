@@ -1,8 +1,18 @@
 "use strict";
+const { validationResult } = require("express-validator");
 const { getUserByEmail } = require("../../services/users");
 const { comparePassword, generateToken } = require("../../services/auth");
 
 exports.signIn = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      status: "error",
+      errors: errors.mapped(),
+    });
+  }
+
   const { email, password } = req.body;
 
   try {

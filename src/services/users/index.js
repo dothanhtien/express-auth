@@ -1,5 +1,48 @@
 "use strict";
+const { body } = require("express-validator");
 const { User } = require("../../../models");
+
+const validate = (method) => {
+  switch (method) {
+    // handle both create and update user validations
+    default: {
+      return [
+        body("email")
+          .trim()
+          .notEmpty()
+          .withMessage("Email must not be empty")
+          .isEmail()
+          .withMessage("Email is invalid")
+          .isLength({ max: 255 })
+          .withMessage("Email cannot be more than 255 characters"),
+        body("password")
+          .trim()
+          .notEmpty()
+          .withMessage("Password must not be empty")
+          .isLength({ min: 6 })
+          .withMessage("Password must be at least 6 characters long")
+          .isLength({ max: 255 })
+          .withMessage("Password cannot be more than 255 characters"),
+        body("firstName")
+          .trim()
+          .isLength({ max: 255 })
+          .withMessage("First name cannot be more than 255 characters"),
+        body("lastName")
+          .trim()
+          .isLength({ max: 255 })
+          .withMessage("Last name cannot be more than 255 characters"),
+        body("dateOfBirth")
+          .optional({ checkFalsy: true })
+          .isDate()
+          .withMessage("Date of birth is invalid"),
+        body("phoneNumber")
+          .trim()
+          .isLength({ max: 255 })
+          .withMessage("Phone number cannot be more than 255 characters"),
+      ];
+    }
+  }
+};
 
 const checkUserExistsByEmail = async (email) => {
   try {
@@ -134,4 +177,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUserByEmail,
+  validate,
 };
