@@ -8,6 +8,7 @@ const {
   checkUserExistsById,
   deleteUser,
 } = require("../../services/users");
+const { encryptPassword } = require("../../services/auth");
 
 exports.createUser = async (req, res) => {
   const { email, password, firstName, lastName, dateOfBirth, phoneNumber } =
@@ -24,9 +25,11 @@ exports.createUser = async (req, res) => {
     });
   }
 
+  const hashedPassword = encryptPassword(password);
+
   const user = await createUser({
     email,
-    password,
+    password: hashedPassword,
     firstName,
     lastName,
     dateOfBirth,

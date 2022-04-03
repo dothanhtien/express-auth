@@ -106,6 +106,25 @@ const deleteUser = async (id) => {
   }
 };
 
+const getUserByEmail = async (email) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 module.exports = {
   checkUserExistsByEmail,
   createUser,
@@ -114,4 +133,5 @@ module.exports = {
   checkUserExistsById,
   updateUser,
   deleteUser,
+  getUserByEmail,
 };
