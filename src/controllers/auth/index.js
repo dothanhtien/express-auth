@@ -1,6 +1,6 @@
 "use strict";
 const { validationResult } = require("express-validator");
-const { getUserByEmail } = require("../../services/users");
+const { getUserByEmail, getUserById } = require("../../services/users");
 const { comparePassword, generateToken } = require("../../services/auth");
 
 exports.signIn = async (req, res) => {
@@ -51,4 +51,22 @@ exports.signIn = async (req, res) => {
       message: "Something went wrong",
     });
   }
+};
+
+exports.getMe = async (req, res) => {
+  const { userId } = req;
+
+  const me = await getUserById(userId);
+
+  if (!me) {
+    return res.status(404).send({
+      status: "error",
+      message: "User does not exist",
+    });
+  }
+
+  res.send({
+    status: "success",
+    data: me,
+  });
 };
