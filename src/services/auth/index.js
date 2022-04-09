@@ -44,7 +44,7 @@ const comparePassword = (password, hashedPassword) => {
 
 const generateToken = (userId) => {
   const token = jwt.sign({ userId }, authConfig.secret, {
-    expiresIn: +authConfig.expiresIn,
+    expiresIn: +authConfig.tokenExpiration,
   });
 
   return token;
